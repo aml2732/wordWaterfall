@@ -1,6 +1,6 @@
 # Word Waterfall
 
-This project is an attempt to use PixiJS library to create a silhouette against a matrix(film)-like-scrolling-vertical-text-background. This is completely for fun-sies and to see if I can do something I think is pretty cool. Later iterations of this might have the ability to edit the words that fall.
+This project is an attempt to use PixiJS library to create a silhouette against a matrix(film)-like-scrolling-vertical-text-background. This is completely for fun-sies and to see if I can do something I think is pretty cool. Later iterations of this might have the ability to edit the words that fall. The current progress can be viewed here: [DEMO](https://aml2732.github.io/wordWaterfall/)
 
 # Screenshot
 

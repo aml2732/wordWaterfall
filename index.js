@@ -60,13 +60,28 @@ function getRandomY(){
   return (Math.ceil(Math.random()*1000) % (app.renderer.height -1))
 }
 
+function getRandomSpeed(){
+  return (Math.ceil(Math.random()*5));
+}
+
 function drawWords(){
   //new PIXI.Text
   for(let i =0; i<lines; i++){
     let text = new PIXI.Text(verticalizeLine(getLine()), {"fill": "#"+(getColor()) });
     text.x = getRandomX();
     text.y = getRandomY();
+    let speed = getRandomSpeed();
     currentStage.addChild(text);
+
+    app.ticker.add(function(delta){
+      let d = Math.ceil(delta);
+      if((text.y+(d*speed)) < app.renderer.height){
+        text.y += (d*speed);
+      }else{
+        text.y = 0 - text.height;
+      }
+
+    });
   }
 }
 
