@@ -16,10 +16,17 @@ var graphics = new PIXI.Graphics();
 let loader = PIXI.loader;
 let Sprite = PIXI.Sprite;
 let resources = PIXI.loader.resources;
+let counter = 0;
+let imageList = [];
 document.body.appendChild(app.view);
 
 loader
   .add('silhouette_01','./img/silhouette_01.png')
+  .add('silhouette_02','./img/silhouette_02.png')
+  .add('silhouette_03','./img/silhouette_03.png')
+  .add('silhouette_04','./img/silhouette_04.png')
+  .add('carot_left', './img/carotLeft.png')
+  .add('carot_right', './img/carotRight.png')
   .load(setup);
 
 function arrayifyContent(){
@@ -64,6 +71,13 @@ function getRandomSpeed(){
   return (Math.ceil(Math.random()*5));
 }
 
+function createPersonList(){
+  imageList.push(new Sprite(resources.silhouette_01.texture))
+  imageList.push(new Sprite(resources.silhouette_02.texture))
+  imageList.push(new Sprite(resources.silhouette_03.texture))
+  imageList.push(new Sprite(resources.silhouette_04.texture))
+}
+
 function drawWords(){
   //new PIXI.Text
   for(let i =0; i<lines; i++){
@@ -87,8 +101,34 @@ function drawWords(){
 
 function drawPerson(){
   var foreground = new Sprite(resources.silhouette_01.texture);
-  foreground.x = app.renderer.width/2 - foreground.width/2;
-  currentStage.addChild(foreground);
+  imageList[counter].x = app.renderer.width/2 - foreground.width/2;
+  currentStage.addChild(imageList[counter]);
+}
+
+function helperDrawPerson(newCounter){
+  currentStage.removeChild(imageList[counter]);
+  counter = newCounter % imageList.length;
+  drawPerson();
+}
+
+function drawCarots(){
+  //Draw Right Carot
+  var rightCarot = new Sprite(resources.carot_right.texture);
+  rightCarot.x = app.renderer.width - rightCarot.width - 5;
+  rightCarot.y = app.renderer.height/2 - rightCarot.height/2;
+  rightCarot.alpha = 0.5;
+  rightCarot.interactive = true;
+  rightCarot.on('mousedown', function(){ helperDrawPerson(counter + 1); });
+  currentStage.addChild(rightCarot);
+
+  //Draw Left Carot
+  var leftCarot = new Sprite(resources.carot_left.texture);
+  leftCarot.x = 5;
+  leftCarot.y = app.renderer.height/2 - leftCarot.height/2;
+  leftCarot.alpha = 0.5;
+  leftCarot.interactive = true;
+  leftCarot.on('mousedown', function(){ helperDrawPerson(counter - 1); });
+  currentStage.addChild(leftCarot);
 }
 
 function setup(){
@@ -98,6 +138,9 @@ function setup(){
   app.stage.addChild(currentStage);
   app.renderer.backgroundColor = "0x1A5276";
 
+  createPersonList();
+
   drawWords();
   drawPerson();
+  drawCarots();
 }
